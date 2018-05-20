@@ -51,7 +51,8 @@
 						android:paddingRight="10dp"
 						android:textSize="17sp"
 						android:id="@+id/info"
-						android:layout_margin="5dp"/>
+						android:layout_margin="5dp"
+						android:foreground="?attr/selectableItemBackground"/>
 
 				</LinearLayout>
 
@@ -179,9 +180,24 @@
 						android:textStyle="bold"
 						android:layout_marginTop="0dp"
 						android:layout_height="wrap_content"
-						android:text="修改"
+						android:text="修改(ROOT模式)"
 						android:textColor="#FFFFFF"
 						android:onClick="Modify"
+						android:foreground="?attr/selectableItemBackground"
+					/>
+					
+					<TextView
+						android:layout_width="match_parent"
+						android:background="#F33F77"
+						android:padding="10dp"
+						android:gravity="center"
+						android:textStyle="bold"
+						android:layout_marginTop="0dp"
+						android:layout_height="wrap_content"
+						android:text="修改(MAGISK模式)"
+						android:textColor="#FFFFFF"
+						android:onClick="Modify_magisk"
+						android:foreground="?attr/selectableItemBackground"
 					/>
 					
 				
@@ -193,9 +209,10 @@
 						android:textStyle="bold"
 						android:layout_marginTop="1dp"
 						android:layout_height="wrap_content"
-						android:text="恢复"
+						android:text="恢复(仅适用于ROOT模式修改)"
 						android:textColor="#FFFFFF"
 						android:onClick="Recover"
+						android:foreground="?attr/selectableItemBackground"
 					/>
 					
 					<TextView
@@ -220,6 +237,7 @@
 						android:text="导入"
 						android:textColor="#FFFFFF"
 						android:onClick="Import"
+						android:foreground="?attr/selectableItemBackground"
 					/>
 					<TextView
 						android:layout_width="match_parent"
@@ -232,6 +250,7 @@
 						android:text="导出"
 						android:textColor="#FFFFFF"
 						android:onClick="Derive"
+						android:foreground="?attr/selectableItemBackground"
 					/>
 				</LinearLayout>
 

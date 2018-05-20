@@ -90,9 +90,10 @@ public class MainActivity extends AppCompatActivity {
 	}
 	
 	
+
 	//恢复
 	public void Recover(View v){
-		snack("正在打工维持生活,有时间就添加这个功能");
+		snack("下个版本就添加了,真的不骗人(有空就加...有空就加...)");
 	}
 	
 	
@@ -191,10 +192,32 @@ public class MainActivity extends AppCompatActivity {
 	
 	
 	
-	
-	
-	public void Modify(View v){
+	public void Modify_magisk(View v){
+		//magisk模块模式
+		b1 = m1.getText().toString();
+		b2 = m2.getText().toString();
+		b3 = m3.getText().toString();
+		b4 = m4.getText().toString();
+		b5 = m5.getText().toString();
 		
+		new AlertDialog.Builder(this)
+			.setTitle("magisk模式")
+			.setMessage("magisk模块挂载机型信息即将更改为\nmodel:"+b1+"\nbrand: "+b2+"\nmanufacturer: "+b3+"\nproduct: "+b4+"\ndevice: "+b5+"\n\n需要注意的是,magisk模块方式修改的机型不会创建备份\n把模块关了就会恢复")
+			.setPositiveButton("确认更改",
+			new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialogInterface, int i) {
+					changeModel(b1,b2,b3,b4,b5);
+				}
+			}) 
+			.setNeutralButton("取消", null)
+			.show();	
+			
+	}
+	
+
+	public void Modify(View v){
+		//root模式
 		b1 = m1.getText().toString();
 		b2 = m2.getText().toString();
 		b3 = m3.getText().toString();
@@ -203,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
 		
 		
 		new AlertDialog.Builder(this)
-			.setTitle("提示")
+			.setTitle("root模式")
 			.setMessage("机型信息即将更改为\nmodel:"+b1+"\nbrand: "+b2+"\nmanufacturer: "+b3+"\nproduct: "+b4+"\ndevice: "+b5+"\n\n本次备份文件即将保存在\n/data/ChangeModel/"+model.replace(" ","")+".prop.bak")
 			.setPositiveButton("确认更改",
 			new DialogInterface.OnClickListener() {
@@ -224,6 +247,43 @@ public class MainActivity extends AppCompatActivity {
 	public void snack(String a){
 		Snackbar.make(getWindow().getDecorView(),a,Snackbar.LENGTH_LONG).show();
 	}
+	
+	
+	//更改magisk挂载型号
+	public void changeModel_magisk(final String mmodel,final String mbrand,final String mmanufacturer,final String mproduct,final String mdevice)
+	{
+
+		new Thread() {
+			@Override
+			public void run()
+			{
+				super.run();
+				//新线程操作
+				String mode[]={"mount -o rw,remount /system"
+					,"cp /magisk/changemodel/system.prop /data/system.prop"
+					,"chmod 0644 /data/system.prop"
+					,"sed -i 's/^ro.product.brand=.*/ro.product.brand="+mbrand+"/' /data/system.prop"
+					,"sed -i 's/^ro.product.model=.*/ro.product.model="+mmodel+"/' /data/system.prop"
+					,"sed -i 's/^ro.product.manufacturer=.*/ro.product.manufacturer="+mmanufacturer+"/' /data/system.prop"
+					,"sed -i 's/^ro.product.device=.*/ro.product.device="+mdevice+"/' /data/system.prop"
+					,"sed -i 's/^ro.build.product=.*/ro.build.product="+mproduct+"/' /data/system.prop"
+					,"cp /data/system.prop /magisk/changemodel/system.prop"};
+
+				new shell().execCommand(mode,true);
+			
+				runOnUiThread(new Runnable(){
+						@Override
+						public void run() {
+							//更新UI操作
+							snack("更改完成,重启生效");
+						}
+
+					});
+			}
+		}.start(); 
+
+	}
+	
 	
 	//改机型
 	public void changeModel(final String mmodel,final String mbrand,final String mmanufacturer,final String mproduct,final String mdevice)
